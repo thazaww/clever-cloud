@@ -1,18 +1,11 @@
-name: Docker Image CI
+FROM anasty17/mltb:dev
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+WORKDIR /usr/src/app
+RUN chmod 777 /usr/src/app
 
-jobs:
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-  build:
+COPY . .
 
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+CMD ["bash", "start.sh"]
